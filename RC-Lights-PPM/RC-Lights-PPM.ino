@@ -1,4 +1,6 @@
-/*
+/**
+ * @brief rc controlled leds for rc planes with ppm input
+ * 
  * Test code for reading a PPM receiver
  *
  * \note The Teensy 3.1 supports 5V input signals and can be plugged
@@ -6,7 +8,6 @@
  * 
  * thanks to https://github.com/Poofjunior/teensyReadRC_Receiver
  */
-
 #include <Adafruit_CPlay_NeoPixel.h>
 
 /**
@@ -26,6 +27,14 @@
  * setup leds
  */
 #define TOTAL_LEDS 14
+
+/**
+ * setup modes
+ * 
+ */
+#define totalModes 2
+#define rayStepSize 4
+
 /**
  * \brief globals relevant to capturing the channel times
  * \note values are modified withing an ISR and must be volatile.
@@ -54,9 +63,13 @@ int current_step = 0;
 uint32_t off = strip.Color(0, 0, 20);
 uint32_t white = strip.Color(255, 255, 255);
 uint32_t blue = strip.Color(0, 0, 255);
+uint32_t cyan = strip.Color(0, 255, 255);
 uint32_t red = strip.Color(255, 0, 0);
 uint32_t green = strip.Color(0, 255, 0);
 uint32_t orange = strip.Color(255, 140, 0);
+
+int speed = 100;
+int currentMode = 0;
 
 void setup()
 {
@@ -72,10 +85,13 @@ void setup()
  */
 void loop()
 {
-    prettyPrintAll();
-    updateLEDs();
+    updateMode();
 
-    int speed = 200;
+    prettyPrintAll();
+    
+   
+    updateLEDs();
+   
     delay(speed);
 }
 
@@ -85,8 +101,22 @@ void loop()
 void updateLEDs()
 {
 
-    updateBase();
+ switch (currentMode)
+    {
+        case 1:
+            updateRay();
+            speed = map(PPM_RX_Vals.channelTimes[0], 1000, 2000, 500, 50); 
+            break;
+    
+        default:
+            updateBase();
+            speed = 100;
+            break;
+    }
 
+
+   
+    strip.show();
     current_step++;
 }
 
@@ -105,8 +135,9 @@ void updateBase()
     int right2 = TOTAL_LEDS - 2;
     int mid = TOTAL_LEDS / 2;
 
-    for(unsigned int i = 2 ; i < TOTAL_LEDS -2 ; i++){
-        strip.setPixelColor(i, white);        
+    for (unsigned int i = 2; i < TOTAL_LEDS - 2; i++)
+    {
+        strip.setPixelColor(i, white);
     }
 
     strip.setPixelColor(left1, green);
@@ -114,13 +145,36 @@ void updateBase()
     strip.setPixelColor(right1, red);
     strip.setPixelColor(right2, red);
 
-    if(current_step % 10 == 0){
+    if (current_step % 10 == 0)
+    {
         strip.setPixelColor(mid, white);
         current_step = 0;
     }
-    else{
+    else
+    {
         strip.setPixelColor(mid, off);
     }
+}
+
+void updateRay()
+{
+
+    for (unsigned int i = 0; i < TOTAL_LEDS; i++)
+    {
+        if (i % rayStepSize == 0 + current_step)
+        {
+            strip.setPixelColor(i, red);
+        }
+        else
+        {
+            strip.setPixelColor(i, cyan);
+        }
+    }
+}
+
+void updateMode(){
+
+    currentMode = map(PPM_RX_Vals.channelTimes[4], 1000, 2000, 0, totalModes);
 
 }
 
