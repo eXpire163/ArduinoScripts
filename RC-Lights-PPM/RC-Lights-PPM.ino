@@ -3,6 +3,8 @@
  *
  * \note The Teensy 3.1 supports 5V input signals and can be plugged
  *       directly into a receiver. 
+ * 
+ * thanks to https://github.com/Poofjunior/teensyReadRC_Receiver
  */
 
 #include <Adafruit_CPlay_NeoPixel.h>
@@ -24,8 +26,6 @@
  * setup leds
  */
 #define TOTAL_LEDS 14
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(TOTAL_LEDS, 2, NEO_GRB + NEO_KHZ800);
-
 /**
  * \brief globals relevant to capturing the channel times
  * \note values are modified withing an ISR and must be volatile.
