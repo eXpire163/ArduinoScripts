@@ -21,24 +21,21 @@
  * setup is different.
  */
 #define NUM_CHANNELS 8
-#define PPM_CHANNEL 7
+#define PPM_CHANNEL 6
 
 /**
  * setup leds
  */
 #define TOTAL_LEDS 11
 
-
-
 // Which pin on the Arduino is connected to the NeoPixels?
 // On a Trinket or Gemma we suggest changing this to 1
-#define PIN            4
+#define PIN 4
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(TOTAL_LEDS, PIN, NEO_GRB + NEO_KHZ800);
-
 
 /**
  * setup modes
@@ -80,10 +77,11 @@ uint32_t blue = strip.Color(0, 0, max_color);
 uint32_t cyan = strip.Color(0, max_color, max_color);
 uint32_t red = strip.Color(max_color, 0, 0);
 uint32_t green = strip.Color(0, max_color, 0);
-uint32_t orange = strip.Color(max_color, max_color/2, 0);
+uint32_t orange = strip.Color(max_color, max_color / 2, 0);
 
 int speed = 100;
 int currentMode = 0;
+uint32_t[] afterBurnerColors;
 
 void setup()
 {
@@ -102,10 +100,9 @@ void loop()
     updateMode();
 
     prettyPrintAll();
-    
-   
+
     updateLEDs();
-   
+
     delay(speed);
 }
 
@@ -114,22 +111,20 @@ void loop()
  */
 void updateLEDs()
 {
-currentMode=0;
- switch (currentMode)
+    currentMode = 0;
+    switch (currentMode)
     {
-        case 1:
-            updateRay();
-            speed = map(PPM_RX_Vals.channelTimes[0], 1000, 2000, 500, 50); 
-            break;
-    
-        default:
-            updateBase();
-            speed = 100;
-            break;
+    case 1:
+        updateRay();
+        speed = map(PPM_RX_Vals.channelTimes[0], 1000, 2000, 500, 50);
+        break;
+
+    default:
+        updateBase();
+        speed = 100;
+        break;
     }
 
-
-   
     strip.show();
     current_step++;
 }
@@ -175,7 +170,7 @@ void updateRay()
 
     for (unsigned int i = 0; i < TOTAL_LEDS; i++)
     {
-        if (i % (rayStepSize-1)  == 0 + current_step)
+        if (i % (rayStepSize - 1) == 0 + current_step)
         {
             strip.setPixelColor(i, red);
         }
@@ -184,15 +179,34 @@ void updateRay()
             strip.setPixelColor(i, cyan);
         }
     }
-    if(current_step >= rayStepSize){
+    if (current_step >= rayStepSize)
+    {
         current_step = -1;
-      }
+    }
 }
 
-void updateMode(){
+void updateAfterburner()
+{
+    int speed = PPM_RX_Vals.channelTimes[0];
+    int ledsToShow = map(speed, 1000, 2000, 0, totalLEDs) + random(-2, 2);
+
+    for (int i = 0; i < totalLEDs; i++)
+    {
+        if (i < ledsToShow)
+        {
+            strip.setPixelColor(i, afterBurnerColors[i]);
+        }
+        else
+        {
+            strip.setPixelColor(i, off);
+        }
+    }
+}
+
+void updateMode()
+{
 
     currentMode = map(PPM_RX_Vals.channelTimes[4], 1000, 2000, 0, totalModes);
-
 }
 
 /**
@@ -203,7 +217,41 @@ void initLED()
 
     strip.begin();
     strip.show(); // Initialize all pixels to 'off'
+
+    //init afterBurnerColors
+    afterBurnerColors = new uint32_t[totalLEDs];
+
+    for (int i = 0; i < totalLEDs; i++)
+    {
+        afterBurnerColors[i] = Wheel(map(i, 0, totalLEDs, 0, 244))
+    }
 }
+
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos)
+{
+    if (WheelPos < 122)
+    {
+        //orange 255, 215, 50
+        //red 255,0,0
+        //blue 51, 92, 255
+        int r = map(WheelPos, 0, 120, 255, 255);
+        int g = map(WheelPos, 0, 120, 215, 0);
+        int b = map(WheelPos, 0, 120, 50, 0);
+        return strip.Color(r, g, b);
+    }
+    else
+    {
+        WheelPos -= 122;
+
+        int r = map(WheelPos, 0, 120, 255, 51);
+        int g = map(WheelPos, 0, 120, 0, 92);
+        int b = map(WheelPos, 0, 120, 0, 255);
+        return strip.Color(r, g, b);
+    }
+}
+
 /**
  * \brief initialize PPM receiver-related variables and enter state machine.
  */
@@ -288,7 +336,7 @@ void prettyPrintAll()
         prettyPrintChannel(i);
         Serial.println();
     }
-    Serial.println();
+    Serial.println(digitalRead(6));
 }
 
 /*
