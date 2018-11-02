@@ -15,7 +15,7 @@ byte value;
 
 
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(19, 2, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(11, 4, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   strip.begin();
@@ -86,17 +86,17 @@ void kerze(){
   //  based on the initial base color
   
   //  Regular (orange) flame:
- //   int r = 226, g = 121, b = 35;
+  //  int r = 226, g = 121, b = 35;
 
   //  Purple flame:
-    int r = 158, g = 8, b = 148;
+ //   int r = 158, g = 8, b = 148;
 
   //  Green flame:
-  // int r = 74, g = 150, b = 12;
+   int r = 74, g = 150, b = 12;
 
   //  Flicker, based on our initial RGB values
   for(int i=0; i<strip.numPixels(); i++) {
-    int flicker = random(0,55);
+    int flicker = random(0,95);
     int r1 = r-flicker;
     int g1 = g-flicker;
     int b1 = b-flicker;

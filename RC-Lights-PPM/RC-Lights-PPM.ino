@@ -8,7 +8,7 @@
  * 
  * thanks to https://github.com/Poofjunior/teensyReadRC_Receiver
  */
-#include <Adafruit_CPlay_NeoPixel.h>
+#include <Adafruit_NeoPixel.h>
 
 /**
  * \brief parameters
@@ -21,12 +21,24 @@
  * setup is different.
  */
 #define NUM_CHANNELS 8
-#define PPM_CHANNEL 12
+#define PPM_CHANNEL 7
 
 /**
  * setup leds
  */
-#define TOTAL_LEDS 14
+#define TOTAL_LEDS 11
+
+
+
+// Which pin on the Arduino is connected to the NeoPixels?
+// On a Trinket or Gemma we suggest changing this to 1
+#define PIN            4
+
+// When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
+// Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
+// example for more information on possible values.
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(TOTAL_LEDS, PIN, NEO_GRB + NEO_KHZ800);
+
 
 /**
  * setup modes
@@ -60,13 +72,15 @@ void loop();
 
 int current_step = 0;
 
+int max_color = 150;
+
 uint32_t off = strip.Color(0, 0, 20);
-uint32_t white = strip.Color(255, 255, 255);
-uint32_t blue = strip.Color(0, 0, 255);
-uint32_t cyan = strip.Color(0, 255, 255);
-uint32_t red = strip.Color(255, 0, 0);
-uint32_t green = strip.Color(0, 255, 0);
-uint32_t orange = strip.Color(255, 140, 0);
+uint32_t white = strip.Color(max_color, max_color, max_color);
+uint32_t blue = strip.Color(0, 0, max_color);
+uint32_t cyan = strip.Color(0, max_color, max_color);
+uint32_t red = strip.Color(max_color, 0, 0);
+uint32_t green = strip.Color(0, max_color, 0);
+uint32_t orange = strip.Color(max_color, max_color/2, 0);
 
 int speed = 100;
 int currentMode = 0;
@@ -100,7 +114,7 @@ void loop()
  */
 void updateLEDs()
 {
-
+currentMode=0;
  switch (currentMode)
     {
         case 1:
@@ -147,7 +161,7 @@ void updateBase()
 
     if (current_step % 10 == 0)
     {
-        strip.setPixelColor(mid, white);
+        strip.setPixelColor(mid, cyan);
         current_step = 0;
     }
     else
@@ -161,7 +175,7 @@ void updateRay()
 
     for (unsigned int i = 0; i < TOTAL_LEDS; i++)
     {
-        if (i % rayStepSize == 0 + current_step)
+        if (i % (rayStepSize-1)  == 0 + current_step)
         {
             strip.setPixelColor(i, red);
         }
@@ -170,6 +184,9 @@ void updateRay()
             strip.setPixelColor(i, cyan);
         }
     }
+    if(current_step >= rayStepSize){
+        current_step = -1;
+      }
 }
 
 void updateMode(){
