@@ -3,14 +3,19 @@
         {
             "name": "Win32",
             "includePath": [
-                "C:\\arduino\\arduino-1.8.5\\tools\\**",
-                "C:\\arduino\\arduino-1.8.5\\hardware\\arduino\\avr\\**",
-                "C:\\arduino\\arduino-1.8.5\\libraries\\Adafruit_Circuit_Playground\\utility\\**"
+                "C:\\Git\\ArduinoScripts\\libraries\\**",
+                "C:\\Users\\cwiedema\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\**",
+                "C:\\Git\\ArduinoScripts\\libraries\\**",
+                "C:\\Program Files (x86)\\Arduino\\libraries\\**",
+                "C:\\Users\\cwiedema\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\1.0.4\\**"
             ],
-            "forcedInclude": [
-                "C:\\arduino\\arduino-1.8.5\\hardware\\arduino\\avr\\cores\\arduino\\Arduino.h"
+            "forcedInclude": [],
+            "defines": [
+                "USBCON"
             ],
-            "intelliSenseMode": "msvc-x64"
+            "intelliSenseMode": "msvc-x64",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4

@@ -15,7 +15,7 @@
 
 #define PIXEL_PIN    4  //13 on white ghost Digital IO pin connected to the NeoPixels.
 
-#define PIXEL_COUNT 7  // Number of NeoPixels
+#define PIXEL_COUNT 1  // Number of NeoPixels
 
 // Declare our NeoPixel strip object:
 Adafruit_NeoPixel strip(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
@@ -31,7 +31,7 @@ Adafruit_NeoPixel strip(PIXEL_COUNT, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 
 void setup() {
-  
+  delay(2000);    
   strip.begin(); // Initialize NeoPixel strip object (REQUIRED)
   strip.show();  // Initialize all pixels to 'off'
 }
@@ -39,10 +39,10 @@ void setup() {
 void loop() {
   // Get current button state.
 
-  int rounds = random(50,1000);
+  int rounds = random(50,200);
   for(int i = 0; i<rounds;i++){
-      int dark = random(1,5);
-      colorSet(strip.Color(  dark,   dark,   dark));
+      int dark = random(20,50);
+      colorSet(strip.Color(  dark, 0, 0));
        delay(1000/10);    
   }
   
@@ -52,7 +52,7 @@ void loop() {
       int dark = random(10,50);
       colorSet(strip.Color(  255,   255,   255));
        delay(random(1000/100, 1000/10));  
-      colorSet(strip.Color(  dark,   dark,   dark));
+      colorSet(strip.Color( dark,  0,   0));
        delay(random(1000/100, 1000/10));      
   }
   
