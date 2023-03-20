@@ -22,7 +22,8 @@ def parseHeader(line, file):
     return line[len(prefix):]
 
 
-files = glob.glob("./**/*.ino").sort()
+files = glob.glob("./**/*.ino")
+files.sort()
 readme = "# Arduino script collection\n\n"
 readme += "| File | Details |\n"
 readme += "| --- | --- |\n"
