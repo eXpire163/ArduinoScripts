@@ -1,11 +1,12 @@
+// about: PPM to light
 /**
  * @brief rc controlled leds for rc planes with ppm input
- * 
+ *
  * Test code for reading a PPM receiver
  *
  * \note The Teensy 3.1 supports 5V input signals and can be plugged
- *       directly into a receiver. 
- * 
+ *       directly into a receiver.
+ *
  * thanks to https://github.com/Poofjunior/teensyReadRC_Receiver
  */
 #include <Adafruit_NeoPixel.h>
@@ -16,7 +17,7 @@
 #define IDLE_TIME_THRESHOLD 4000
 #define ULONG_MAX 0xffffffff
 
-/** 
+/**
  * pins correspond to the digital IO pins. Change these values if your
  * setup is different.
  */
@@ -39,7 +40,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(TOTAL_LEDS, PIN, NEO_GRB + NEO_KHZ80
 
 /**
  * setup modes
- * 
+ *
  */
 #define totalModes 2
 #define rayStepSize 4
@@ -107,7 +108,7 @@ void loop()
 }
 
 /**
- * basic led loop 
+ * basic led loop
  */
 void updateLEDs()
 {
@@ -130,9 +131,9 @@ void updateLEDs()
 }
 
 /*********************
- * 
+ *
  * MODES
- * 
+ *
  **************/
 
 void updateBase()
@@ -218,7 +219,7 @@ void initLED()
     strip.begin();
     strip.show(); // Initialize all pixels to 'off'
 
-    //init afterBurnerColors
+    // init afterBurnerColors
     afterBurnerColors = new uint32_t[totalLEDs];
 
     for (int i = 0; i < totalLEDs; i++)
@@ -233,9 +234,9 @@ uint32_t Wheel(byte WheelPos)
 {
     if (WheelPos < 122)
     {
-        //orange 255, 215, 50
-        //red 255,0,0
-        //blue 51, 92, 255
+        // orange 255, 215, 50
+        // red 255,0,0
+        // blue 51, 92, 255
         int r = map(WheelPos, 0, 120, 255, 255);
         int g = map(WheelPos, 0, 120, 215, 0);
         int b = map(WheelPos, 0, 120, 50, 0);
@@ -274,8 +275,8 @@ void initPPM_RX()
     attachInterrupt(PPM_CHANNEL, stopTimer, FALLING);
 }
 
-/** 
- * \brief callback fn for initializing FSM to a known start state by 
+/**
+ * \brief callback fn for initializing FSM to a known start state by
  *        waiting for the start of the next packet.
  */
 void startInitialTimer()
@@ -283,8 +284,8 @@ void startInitialTimer()
     PPM_RX_Vals.startTime = micros();
 }
 
-/** 
- * \brief callback fn for evaluating receiver. Starts the timer and 
+/**
+ * \brief callback fn for evaluating receiver. Starts the timer and
  *        attaches a falling-edge interrupt to the channel that
  *        triggered this interrupt.
  */

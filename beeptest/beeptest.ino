@@ -1,3 +1,4 @@
+// about: test audio stuff
 /* Blink without Delay
 
  Turns on and off a light emitting diode(LED) connected to a digital

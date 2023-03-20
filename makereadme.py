@@ -22,9 +22,6 @@ def parseHeader(line, file):
     return line[len(prefix):]
 
 
-# test
-assert(parseHeader("// about: test") == "test")
-
 files = glob.glob("./**/*.ino")
 readme = "# Arduino script collection\n\n"
 readme += "| File | Details |\n"
@@ -32,10 +29,10 @@ readme += "| --- | --- |\n"
 
 for file in files:
     with open(file) as f:
-        first_line = f.readline()
+        first_line = f.readline().rstrip()
         readme += f'| {os.path.basename(file)} | {parseHeader(first_line, file)} |\n'
 
 
-f = open("demofile2.md", "w")
+f = open("README.md", "w")
 f.write(readme)
 f.close()

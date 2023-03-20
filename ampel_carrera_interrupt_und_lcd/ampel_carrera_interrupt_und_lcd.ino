@@ -1,9 +1,9 @@
+// about: same with added lightgates for start check and lapcount WIP
 #include <Adafruit_NeoPixel.h>
 // include the library code:
 #include <LiquidCrystalFast.h>
 
-
-int numPixel = 12; //60;
+int numPixel = 12; // 60;
 
 int ticker = 1;
 bool isOn = true;
@@ -11,12 +11,11 @@ bool isOn = true;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(numPixel, 20, NEO_GRB + NEO_KHZ800);
 LiquidCrystalFast lcd(2, 15, 3, 17, 4, 19, 5);
 
-
 const int startButton = 14;
 const int sensorLane1 = 16;
 const int sensorLane2 = 18;
 
-const int ledPin =  13;
+const int ledPin = 13;
 
 int helligkeit = 255;
 
@@ -30,9 +29,7 @@ uint32_t orange;
 
 int totalRounds = 6;
 
-
 bool racing = false;
-
 
 bool wasPressed;
 
@@ -54,7 +51,6 @@ int bestRound2;
 elapsedMillis roundTimeLane1;
 elapsedMillis roundTimeLane2;
 
-
 void setup()
 {
   wasPressed = false;
@@ -66,7 +62,6 @@ void setup()
   lcd.begin(16, 2);
   lcd.print("Carrera Profi - Laptime");
 
-
   setColors();
 
   strip.setBrightness(110);
@@ -75,18 +70,15 @@ void setup()
   pinMode(sensorLane1, INPUT_PULLUP);
   pinMode(sensorLane2, INPUT_PULLUP);
 
-
   pinMode(ledPin, OUTPUT);
 
   attachInterrupt(startButton, setStart, FALLING); // interrrupt 1 is data ready
 
   setStartVars();
-
 }
 
-
-
-void setStartVars() {
+void setStartVars()
+{
   Serial.println("setStartVars");
   countdownRunning = false;
   racing = false;
@@ -100,7 +92,6 @@ void setStartVars() {
   countLane1 = 0;
   countLane2 = 0;
 
-
   lastRound1 = -1;
   bestRound1 = -1;
   lastRound2 = -1;
@@ -109,78 +100,71 @@ void setStartVars() {
   setRow1(schwarz);
   setRow2(schwarz);
   setRow3(schwarz);
-
-
 }
 
+void loop()
+{
 
-
-
-
-
-void loop() {
-
-  if (wasPressed) {
+  if (wasPressed)
+  {
 
     setStartVars();
 
     countdown();
 
-    if (fehlstartLane1 || fehlstartLane2) {
+    if (fehlstartLane1 || fehlstartLane2)
+    {
       showFehlstart();
     }
-    else {
+    else
+    {
       startRace();
     }
     wasPressed = false;
-
   }
 
-
-  if (racing) {
+  if (racing)
+  {
     updateStatus();
-    if (countLane1 >= totalRounds || countLane2 >= totalRounds) {
+    if (countLane1 >= totalRounds || countLane2 >= totalRounds)
+    {
       endRace();
       showWinner();
-
     }
   }
   delay(5);
-
 }
 
-void startRace() {
+void startRace()
+{
   Serial.println("race start");
   racing = true;
-  attachInterrupt(sensorLane1, endRound1, RISING); 
-  attachInterrupt(sensorLane2, endRound2, RISING); 
+  attachInterrupt(sensorLane1, endRound1, RISING);
+  attachInterrupt(sensorLane2, endRound2, RISING);
 
   roundTimeLane1 = 0;
   roundTimeLane2 = 0;
-
 }
 
-void endRace() {
+void endRace()
+{
   racing = false;
   Serial.println("race ended");
   detachInterrupt(sensorLane1);
   detachInterrupt(sensorLane2);
-
 }
 
-
-
-void showFehlstart() {
-  if (fehlstartLane1) {
+void showFehlstart()
+{
+  if (fehlstartLane1)
+  {
     setCol1(rot);
   }
-  if (fehlstartLane2) {
+  if (fehlstartLane2)
+  {
     setCol2(rot);
   }
-
-
 }
-
 
 // startknopf pressed
 void setStart()
@@ -189,9 +173,7 @@ void setStart()
   Serial.println("Start was Pressed");
   wasPressed = true;
   sei();
-
 }
-
 
 // rundenzäler
 void endRound1()
@@ -200,13 +182,13 @@ void endRound1()
   countLane1++;
   lastRound1 = roundTimeLane1;
   roundTimeLane1 = 0;
-  if (lastRound1 < bestRound1) {
+  if (lastRound1 < bestRound1)
+  {
     bestRound1 = lastRound1;
   }
   String outputtext = "lane1;" + String(countLane1) + ";" + String(lastRound1);
   Serial.println(outputtext);
   sei();
-
 }
 
 // rundenzäler
@@ -216,15 +198,14 @@ void endRound2()
   countLane2++;
   lastRound2 = roundTimeLane2;
   roundTimeLane2 = 0;
-  if (lastRound2 < bestRound2) {
+  if (lastRound2 < bestRound2)
+  {
     bestRound2 = lastRound2;
   }
   String outputtext = "lane2;" + String(countLane2) + ";" + String(lastRound2);
   Serial.println(outputtext);
   sei();
-
 }
-
 
 // fehlstarts interupts
 void fehlstartcheck1()
@@ -233,7 +214,6 @@ void fehlstartcheck1()
   Serial.println("fehlstart;1");
   fehlstartLane1 = true;
   sei();
-
 }
 
 void fehlstartcheck2()
@@ -242,52 +222,52 @@ void fehlstartcheck2()
   Serial.println("fehlstart;2");
   fehlstartLane2 = true;
   sei();
-
 }
 
-
-void countdown() {
-  //erst low adnn high
+void countdown()
+{
+  // erst low adnn high
 
   lcd.clear();
 
-
   int countOK = 0;
-  while ((digitalRead(sensorLane1) == LOW || digitalRead(sensorLane2)  == LOW) || countOK < 200) {
+  while ((digitalRead(sensorLane1) == LOW || digitalRead(sensorLane2) == LOW) || countOK < 200)
+  {
 
-    if (digitalRead(sensorLane1) == HIGH && digitalRead(sensorLane2)  == HIGH) {
+    if (digitalRead(sensorLane1) == HIGH && digitalRead(sensorLane2) == HIGH)
+    {
       countOK++;
     }
 
-    if (digitalRead(sensorLane1) == LOW) {
+    if (digitalRead(sensorLane1) == LOW)
+    {
       setCol1(blau);
       write1("1: Zum Start");
-
-    } else {
+    }
+    else
+    {
       setCol1(turkies);
 
       write1("1: Bereit");
-
     }
-    if (digitalRead(sensorLane2) == LOW) {
+    if (digitalRead(sensorLane2) == LOW)
+    {
       setCol2(blau);
       write2("2: Zum Start");
-    } else {
+    }
+    else
+    {
       setCol2(turkies);
       lcd.setCursor(0, 1);
       write2("2: Bereit");
-
     }
 
     delay(5);
-
   }
   lcd.clear();
 
-  attachInterrupt(sensorLane1, fehlstartcheck1, RISING ); //fehlstartcheck
-  attachInterrupt(sensorLane2, fehlstartcheck2, RISING ); // fehlstartcheck
-
-
+  attachInterrupt(sensorLane1, fehlstartcheck1, RISING); // fehlstartcheck
+  attachInterrupt(sensorLane2, fehlstartcheck2, RISING); // fehlstartcheck
 
   countdownRunning = true;
 
@@ -303,7 +283,6 @@ void countdown() {
   delay(1000);
   setRow1(schwarz);
 
-
   lcd.setCursor(9, 0);
   lcd.print("2");
   Serial.println("Start in;2");
@@ -317,7 +296,6 @@ void countdown() {
 
   setRow3(rot);
   delay(1000);
-
 
   detachInterrupt(sensorLane1);
   detachInterrupt(sensorLane2);
@@ -335,26 +313,25 @@ void countdown() {
   setRow3(schwarz);
 
   countdownRunning = false;
-
 }
 
-
-void showWinner() {
+void showWinner()
+{
 
   int winnerpos = 0;
-  if (countLane2 > countLane1) {
+  if (countLane2 > countLane1)
+  {
     winnerpos = 6;
   }
 
-  while (!wasPressed) {
+  while (!wasPressed)
+  {
     zielflagge(winnerpos);
-
   }
-
-
 }
 
-void zielflagge(int winnerpos) {
+void zielflagge(int winnerpos)
+{
 
   setPixel(winnerpos + 0, weis);
   setPixel(winnerpos + 1, schwarz);
@@ -376,11 +353,11 @@ void zielflagge(int winnerpos) {
 
   strip.show();
 
-
   delay(200);
 }
 
-void updateStatus() {
+void updateStatus()
+{
 
   String last1 = " L:" + (lastRound1 / 1000);
   String best1 = " B:" + (bestRound1 / 1000);
@@ -397,43 +374,45 @@ void updateStatus() {
   showRounds();
 }
 
-//lane 1 = , lane 2 = 6
-void showRounds(){
+// lane 1 = , lane 2 = 6
+void showRounds()
+{
 
-  for(int i = 0; i<= (countLane1-1); i++){
+  for (int i = 0; i <= (countLane1 - 1); i++)
+  {
     setPixel(i, orange);
-    
   }
 
-for(int i = 0; i<= (countLane2-1); i++){
-    setPixel(i+6, orange);
-    
+  for (int i = 0; i <= (countLane2 - 1); i++)
+  {
+    setPixel(i + 6, orange);
   }
-  
+
   strip.show();
-  
-  
-  
 }
-
 
 String txt1 = "";
 String txt2 = "";
-void write1(String txt) {
-  if (txt != txt1) {
+void write1(String txt)
+{
+  if (txt != txt1)
+  {
     txt1 = txt;
-    while (txt.length() < 20) {
+    while (txt.length() < 20)
+    {
       txt = txt + " ";
     }
     lcd.setCursor(0, 0);
     lcd.print(txt);
-
   }
 }
-void write2(String txt) {
-  if (txt != txt2) {
+void write2(String txt)
+{
+  if (txt != txt2)
+  {
     txt2 = txt;
-    while (txt.length() < 20) {
+    while (txt.length() < 20)
+    {
       txt = txt + " ";
     }
     lcd.setCursor(0, 1);
@@ -441,16 +420,17 @@ void write2(String txt) {
   }
 }
 
-
-//Display Helper -> Ampel
-void setCol1(uint32_t farbe) {
+// Display Helper -> Ampel
+void setCol1(uint32_t farbe)
+{
   setPixel(0, farbe);
   setPixel(1, farbe);
   setPixel(2, farbe);
 
   strip.show();
 }
-void setCol2(uint32_t farbe) {
+void setCol2(uint32_t farbe)
+{
   setPixel(9, farbe);
   setPixel(10, farbe);
   setPixel(11, farbe);
@@ -458,22 +438,24 @@ void setCol2(uint32_t farbe) {
   strip.show();
 }
 
-
-void setRow1(uint32_t farbe) {
+void setRow1(uint32_t farbe)
+{
   setPixel(0, farbe);
   setPixel(5, farbe);
   setPixel(6, farbe);
   setPixel(11, farbe);
   strip.show();
 }
-void setRow2(uint32_t farbe) {
+void setRow2(uint32_t farbe)
+{
   setPixel(0 + 1, farbe);
   setPixel(3 + 1, farbe);
   setPixel(6 + 1, farbe);
   setPixel(9 + 1, farbe);
   strip.show();
 }
-void setRow3(uint32_t farbe) {
+void setRow3(uint32_t farbe)
+{
   setPixel(2, farbe);
   setPixel(3, farbe);
   setPixel(8, farbe);
@@ -481,17 +463,16 @@ void setRow3(uint32_t farbe) {
   strip.show();
 }
 
-
-
-void setPixel(int number, uint32_t c) {
-  if (number < strip.numPixels()) {
+void setPixel(int number, uint32_t c)
+{
+  if (number < strip.numPixels())
+  {
     strip.setPixelColor(number, c);
-
   }
 }
 
-void setColors() {
-
+void setColors()
+{
 
   rot = strip.Color(helligkeit, 0, 0);
   gruen = strip.Color(0, helligkeit, 0);
@@ -499,9 +480,5 @@ void setColors() {
   weis = strip.Color(helligkeit, helligkeit, helligkeit);
   blau = strip.Color(0, 0, helligkeit);
   turkies = strip.Color(0, helligkeit, helligkeit);
-  orange = strip.Color(helligkeit,helligkeit,0);
-
+  orange = strip.Color(helligkeit, helligkeit, 0);
 }
-
-
-

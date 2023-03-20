@@ -1,3 +1,4 @@
+// about: fireworks effect
 #include <FastLED.h>
 
 // How many leds in your strip?
@@ -36,7 +37,7 @@ void loop()
   }
 
   // Turn the LED on, then pause
-  //EVERY_N_MILLISECONDS(200){
+  // EVERY_N_MILLISECONDS(200){
   //  leds[random8(0,NUM_LEDS -1)] = CRGB::Red;
   //}
   EVERY_N_SECONDS(5)
@@ -44,7 +45,7 @@ void loop()
     nextPattern();
   }
 
-  //fadeToBlackBy(leds, NUM_LEDS, 1);
+  // fadeToBlackBy(leds, NUM_LEDS, 1);
   FastLED.show();
 }
 

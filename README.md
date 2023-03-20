@@ -1,32 +1,35 @@
-# ArduinoScripts
+# Arduino script collection
 
-
-| Project | Summery |
-| ------- | ------- |
-| _3_4_display | Display something on a selfmade (snakestyle) 3x4 matrix |
-| alexa_switch | Switch for alexa - not working |
-| ampel_carrera | using a 3x4 snakestyle matrix to have racelight |
-| ampel_carrera_interrupt | same with added lightgates for start check and lapcount |
-| ampel_carrera_interrupt_und_lcd | NA |
-| babylicht | stupid light |
-| Blink2 | blinging demo |
-| irTest | Infrared example |
-| lcdtest | ??? |
-| neo | more blinking |
-| neo2_ino_final | even more blinking |
-| rc_leds | rc controled leds |
-| RC-Lights | rc crontolled leds with 6 channel input |
-| RC-Lights_2 | other rc lights |
-| RC-Lights-PPM | rc controlled leds for rc planes with ppm input |
-| uhr | limple ws2812 clock |
-| wsTest | websocked test |
-| alexa_rgb | alexe controlling colors - not working |
-| beeptest | beeper test |
-| BlinkAll | another blinker |
-| laterne | Kinds latern with animation |
-| laterneSun | Different Style
-| ghost | flickering light for halloween ghost |
-| neo2 |  |
-| PanTilt | 360°x180° pan tilt system - possible base for tracking systems |
-| RC-DifferetialThrust | v-control or differential thrust chip for rc - 2 channel in -out |
-| wohnzimmer_live | light system for my living room |
+| File | Details |
+| --- | --- |
+| alexa_rgb.ino | Switch for alexa - not working |
+| alexa_switch.ino | Switch for alexa - not working |
+| ampel_carrera.ino | using a 3x4 snakestyle matrix to have racelight |
+| ampel_carrera_interrupt.ino | same with added lightgates for start check and lapcount |
+| ampel_carrera_interrupt_und_lcd.ino | same with added lightgates for start check and lapcount WIP |
+| babylicht.ino | stupid light |
+| beeptest.ino | test audio stuff |
+| Blink2.ino | blinging demo |
+| BlinkAll.ino | more blinking |
+| fireworks.ino | fireworks effect |
+| ghost.ino | flickering light for halloween ghost |
+| ghost_blue_red.ino | flickering light for halloween ghost with colors |
+| heli_position_lights.ino | heli / plane position lights |
+| irTest.ino | Infrared example |
+| laterne.ino | Kinds latern with animation |
+| laterneSun.ino | Kinds latern with animation warm light |
+| lcdtest.ino | lcdtest |
+| neo.ino | play with neo led lib |
+| neo2.ino | play with neo led lib 2 |
+| neo2_ino_final.ino | play with neo led lib final |
+| PanTilt.ino | servo control |
+| RC-DifferetialThrust.ino | V-Mix / Differential thrust |
+| RC-Lights-PPM.ino | PPM to light |
+| RC-Lights_2.ino | PPM to light 2 |
+| rc_leds.ino | rc lights |
+| star.ino | halloween star |
+| uhr.ino | clock |
+| wohnzimmer_live.ino | room lights |
+| wsTest.ino | led test |
+| x-star.ino | x-mas star mod |
+| _3_4_display.ino | Display something on a selfmade (snakestyle) 3x4 matrix |
