@@ -1,5 +1,4 @@
-name: cron
-
+name: README
 on:
   push:
     branches:
