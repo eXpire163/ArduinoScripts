@@ -33,7 +33,7 @@ for file in files:
         readme += f'| {os.path.basename(file)} | {parseHeader(first_line, file)} |\n'
 
 
-readme += "\n\n\n To update this list, please run [makereadme.py](./makereadme.py)"
+readme += "\n\n\n*This file is generated via github actions, please do not change it by hand*"
 
 f = open("README.md", "w")
 f.write(readme)
