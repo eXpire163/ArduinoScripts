@@ -21,12 +21,12 @@
 | ghost_blue_red.ino | flickering light for halloween ghost with colors |
 | heli_position_lights.ino | heli / plane position lights |
 | irTest.ino | Infrared example |
-| laterneSun.ino | Kinds latern with animation warm light |
 | laterne.ino | Kinds latern with animation |
+| laterneSun.ino | Kinds latern with animation warm light |
 | lcdtest.ino | lcdtest |
+| neo.ino | play with neo led lib |
 | neo2.ino | play with neo led lib 2 |
 | neo2_ino_final.ino | play with neo led lib final |
-| neo.ino | play with neo led lib |
 | rc_leds.ino | rc lights |
 | star.ino | halloween star |
 | uhr.ino | clock |
