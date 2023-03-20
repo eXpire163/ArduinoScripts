@@ -36,4 +36,4 @@
 
 
 
- To update this list, please run [makereadme.py](./makereadme.py)
+*This file is generated via github actions, please do not change it by hand*
