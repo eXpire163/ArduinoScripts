@@ -21,6 +21,15 @@ def parseHeader(line, file):
         return "no header"
     return line[len(prefix):]
 
+def makeTitle(file):
+    readme = os.path.basename(file)[:-4]+"/README.md";
+    if os.path.exists(readme):
+        return f'[{os.path.basename(file)}](./{readme})'
+    else:
+        return os.path.basename(file)
+
+
+
 
 files = glob.glob("./**/*.ino")
 files.sort(key=lambda v: v.upper())
@@ -31,7 +40,8 @@ readme += "| --- | --- |\n"
 for file in files:
     with open(file) as f:
         first_line = f.readline().rstrip()
-        readme += f'| {os.path.basename(file)} | {parseHeader(first_line, file)} |\n'
+        title = makeTitle(file)
+        readme += f'| {title} | {parseHeader(first_line, file)} |\n'
 
 
 readme += "\n\n\n*This file is generated via github actions, please do not change it by hand*"
