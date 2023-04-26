@@ -14,7 +14,7 @@
 | fireworks.ino | fireworks effect |
 | ghost.ino | flickering light for halloween ghost |
 | ghost_blue_red.ino | flickering light for halloween ghost with colors |
-| heli_position_lights.ino | heli / plane position lights |
+| [heli_position_lights.ino](./heli_position_lights/README.md) | heli / plane position lights |
 | irTest.ino | Infrared example |
 | laterne.ino | Kinds latern with animation |
 | laterneSun.ino | Kinds latern with animation warm light |
